@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.cart"> <!-- type은 modelConfig.xml에서 설정-->
+	<resultMap id="productResult" type="productVO">
+		<result property="cartId" column="cartId" />
+        <result property="userId" column="userId" />
+        <result property="productId" column="productId" />
+        <result property="productCount" column="productCount" />
+        <result property="totalPrice" column="totalPrice" />
+	</resultMap> 
+
+
+    <!-- null값이 들어갈 수 있는 행은 value값 뒤에 , jdbcType=VARCHAR를 붙이거나 mybatis-config.xml파일에서 전역 설정을 해주면 됩니다 -->
+  	<!-- 모든 카트 목록 불러오기 -->
+  	<select id="selectAllCart"  resultType="CartVO">
+		<![CDATA[
+		 SELECT * FROM CARTS WHERE userId=#{userId}
+		]]>
+	</select>
+	
+	<!-- 카트에 추가 -->
+	<insert id="insertCart"  parameterType="CartVO">
+		<![CDATA[
+		 insert into carts values(seq_cartId.nextval, #{userId}, #{productId}, #{productCount},
+		 				#{totalPrice})
+		]]>
+	</insert>
+	
+	<!-- 카트 업데이트 -->
+	<update id="updateCart"  parameterType="CartVO">
+     <![CDATA[
+	     update carts
+	     set productCount=#{productCount}, totalPrice=#{totalPrice}
+	     where userId=#{userId} AND productId=#{productId}
+      ]]>      
+   </update> 
+     
+   <!-- 해당 Id의 모든 상품 삭제 -->
+   <delete id="deleteCart"  parameterType="String">
+	<![CDATA[
+	   delete from carts
+	   where
+	   userId=#{userId}
+	]]>      
+  </delete>
+  
+  <!-- 해당 Id의 특정 상품 삭제 -->
+  <delete id="removeCart"  parameterType="String">
+	<![CDATA[
+	   delete from carts
+	   where
+	   userId=#{userId} AND productId=#{productId}
+	]]>      
+  </delete>
+
+   </mapper>

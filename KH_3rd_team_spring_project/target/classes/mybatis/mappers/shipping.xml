@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.shipping"> <!-- type은 modelConfig.xml에서 설정-->
+	<resultMap id="productResult" type="productVO">
+		<result property="shippingId" column="shippingId" />
+        <result property="userId" column="userId" />
+        <result property="name" column="name" />
+        <result property="shipping_date" column="shipping_date" />
+        <result property="productId" column="productId" />
+        <result property="productCount" column="productCount" />
+        <result property="address" column="address" />
+        <result property="zipCode" column="zipCode" />
+        <result property="phoneNum" column="phoneNum" />
+	</resultMap> 
+
+
+    <!-- null값이 들어갈 수 있는 행은 value값 뒤에 , jdbcType=VARCHAR를 붙이거나 mybatis-config.xml파일에서 전역 설정을 해주면 됩니다 -->
+    <!-- 계정에 해당하는 배송목록 조회 -->
+  	<select id="selectAllShipping" resultType="ShippingVO">
+		<![CDATA[
+		 SELECT * FROM shippingInfo WHERE userId=#{userId}
+		]]>
+	</select>
+	
+	<!-- 계정에 해당하는 배송정보 상세 조회 -->
+	<select id="selectDetailShipping" parameterType="ShippingVO" resultType="ShippingVO">
+		<![CDATA[
+		 SELECT * FROM shippingInfo WHERE shippingId=#{shippingId} AND userId=#{userId}
+		]]>
+	</select>
+	
+	<!-- 배송정보를 입력합니다 -->
+	<insert id="insertShipping"  parameterType="ShippingVO">
+		<![CDATA[
+		 insert into shippingInfo values (seq_shippingId.CURRVAL, #{userId}, #{name}, #{shipping_date},
+		 				#{productId}, #{productCount}, #{address}, #{zipCode}, #{phoneNum})
+		]]>
+	</insert>
+	
+	<!-- 시퀀스(shippingId) 1 증가 -->
+	<select id="nextSeq" resultType="int">
+		<![CDATA[
+		 SELECT seq_shippingId.nextval FROM dual
+		]]>
+	</select>
+    </mapper>

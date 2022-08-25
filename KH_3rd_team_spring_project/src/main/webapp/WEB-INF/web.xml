@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns="http://java.sun.com/xml/ns/javaee"
+   xsi:schemaLocation="http://Java.sun.com/xml/ns/javaee http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+   id="WebApp_ID" version="3.0">
+
+   <!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+   <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+      <param-value>/WEB-INF/spring/action-mybatis.xml</param-value>
+   </context-param>
+   
+   <!-- Creates the Spring Container shared by all Servlets and Filters -->
+   <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+   </listener>
+
+   <!-- Processes application requests -->
+   <servlet>
+      <servlet-name>appServlet</servlet-name>
+      <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+      <init-param>
+         <param-name>contextConfigLocation</param-name>
+         <param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+      </init-param>
+      <load-on-startup>1</load-on-startup>
+      <async-supported>true</async-supported> <!-- 웹소켓을 위한 설정(비동기지원) -->
+   </servlet>
+      
+   <servlet-mapping>
+      <servlet-name>appServlet</servlet-name>
+      <url-pattern>/</url-pattern>
+   </servlet-mapping>
+   
+   <servlet>
+      <display-name>ViewNameInterceptor</display-name>
+      <servlet-name>ViewNameInterceptor</servlet-name>
+      <servlet-class>com.myspring.kh.common.interceptor.ViewNameInterceptor</servlet-class>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>ViewNameInterceptor</servlet-name>
+      <url-pattern>/ViewNameInterceptor</url-pattern>
+   </servlet-mapping>
+   
+   <error-page>
+      <error-code>404</error-code>
+      <location>/WEB-INF/views/common/exceptionNoPage.jsp</location>
+   </error-page>
+
+   <error-page>
+      <error-code>405</error-code>
+      <location>/WEB-INF/views/common/exceptionNoPage.jsp</location>
+   </error-page>
+
+   <error-page>
+      <error-code>500</error-code>
+      <location>/WEB-INF/views/common/exceptionNoPage.jsp</location>
+   </error-page>
+   <!-- 한글깨짐 UTF-8설정 -->
+  <filter>
+      <filter-name>encodingFilter</filter-name>
+   <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+      <init-param>
+    <param-name>encoding</param-name>
+    <param-value>utf-8</param-value>
+     </init-param>
+  </filter>
+
+  <filter-mapping>
+   <filter-name>encodingFilter</filter-name>
+   <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+    <!-- 게시판 페이징 처리를 위한 설정값 
+   한 페이지에 표시할 게시글의 수 -->
+  <context-param>
+    <param-name>POSTS_PER_PAGE</param-name>
+    <param-value>10</param-value>
+  </context-param>
+  <context-param>
+  <!-- 
+     한 페이지에 보여질 목록 페이지
+   즉 1 2 3 4 5
+   이렇게 5 페이지까지 있다.!-->
+    <param-name>PAGES_PER_BLOCK</param-name>
+    <param-value>5</param-value>
+  </context-param>
+  
+</web-app>

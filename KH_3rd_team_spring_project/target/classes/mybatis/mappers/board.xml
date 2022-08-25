@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+
+<mapper namespace="mapper.board">
+   <resultMap id="boardResult" type="boardVO">
+      <result property="num" column="num" />
+      <result property="title" column="title" />
+      <result property="content" column="content" />
+      <result property="nickname" column="nickname" />
+      <result property="imagename" column="imagename" />
+      <result property="postdate" column="postdate" />
+      <result property="commentcount" column="commentcount" />
+   </resultMap>
+   
+   <resultMap id="boardCommentResult" type="boardCommentVO">
+      <result property="comment_num" column="comment_num" />
+      <result property="comment_board_num" column="comment_board_num" />
+      <result property="comment_content" column="comment_content" />
+      <result property="comment_nickname" column="comment_nickname" />
+      <result property="comment_date" column="comment_date" />
+   </resultMap>
+   
+   <!-- 제목/내용 검색어 조건에 해당되는 게시글 수 카운트 -->
+   <select id="selectCount" resultType="int"  >
+      SELECT COUNT(*) FROM board
+      <if test="searchField=='title'">
+      WHERE title 
+      </if>
+       <if test="searchField=='content'">
+       WHERE content 
+       </if>
+       <if test="searchWord!=null">
+       like '%' ||  #{searchWord} || '%' 
+      </if>
+      </select>
+   
+   <!-- 리스트 페이지 처리, 제목/내용 검색어 조건 포함 -->   
+   <select id="selectListPage" resultMap="boardResult">
+      SELECT * FROM( SELECT Tb.*, ROWNUM rNum 
+      FROM (  SELECT * FROM board
+      <if test="searchField=='title'">
+      WHERE title 
+      </if>
+       <if test="searchField=='content'">
+       WHERE content 
+       </if>
+       <if test="searchWord!=null">
+       like '%' ||  #{searchWord} || '%' 
+      </if>
+      ORDER BY num DESC ) Tb )
+      WHERE rNum BETWEEN #{start} AND #{end}
+   </select>
+   
+   
+   <!-- 게시글 추가 -->
+   <insert id="insertNewPost"  parameterType="boardVO">
+      <selectKey keyProperty="seq_board_num" resultType="int" order="BEFORE">
+          SELECT seq_board_num.CURRVAL FROM DUAL
+      </selectKey>
+      <![CDATA[
+         INSERT into board(num,title,content,nickname,imagename)
+         VALUES(#{seq_board_num},#{title}, #{content}, #{nickname}, #{imagename})
+      ]]>
+   </insert>
+   
+   <!-- 새로운 게시글 번호 조회 -->   
+   <select id="selectNewPostNO" resultType="int">
+      <![CDATA[
+         SELECT seq_board_num.NEXTVAL FROM DUAL
+      ]]>
+   </select>
+   
+   
+   <insert id="insertNewComment"  parameterType="boardCommentVO">
+   <selectKey keyProperty="seq_comment_num" resultType="int" order="BEFORE">
+          SELECT seq_comment_num.NEXTVAL FROM DUAL
+      </selectKey>
+    <![CDATA[
+         INSERT into board_comment(comment_num,comment_board_num,comment_content,comment_nickname)
+         VALUES(#{seq_comment_num},#{comment_board_num}, #{comment_content}, #{comment_nickname})
+      ]]>
+    </insert>
+   
+   <!--댓글 작성 후 댓글 수 증가 -->
+   <update id="plusCommentNum" >
+      <![CDATA[
+         update board
+         set commentcount=commentcount+1 
+         where num = #{num}
+      ]]>
+   </update>
+   
+   <!-- 새로운 댓글 번호 조회 -->   
+   <select id="selectNewCommentNO" resultType="int">
+      <![CDATA[
+         SELECT nvl(max(comment_num)+1,'1')
+         from board_comment
+      ]]>
+   </select>
+   
+   <!-- 해당 게시글 반환( 조회 목적) -->
+   <select id="selectViewPost" resultType="boardVO" parameterType="int">
+      <![CDATA[
+         SELECT * from board
+         where num = #{num}
+      ]]>
+   </select>
+   
+   <!-- 게시글 해당 댓글 조회 -->
+   <select id="selectComment" resultMap="boardCommentResult">
+      <![CDATA[
+         SELECT * from board_comment
+         where comment_board_num = #{num}
+         order by comment_num
+      ]]>
+   </select>
+   
+   
+   <!--해당 게시글 수정 -->
+   <update id="updatePost" parameterType="java.util.Map">
+      update board
+      set title=#{title}, 
+      content=#{content}
+      <if test="imagename!='' and imagename!=null">
+         , imagename=#{imagename}
+      </if>
+      where num = #{num}
+   </update>
+   
+   
+   <!-- 게시글 삭제 -->
+   <delete id="deletePost" parameterType="int">
+      <![CDATA[
+         delete from board
+         where num = #{num}
+      ]]>
+   </delete>
+   
+   
+   <!-- 게시글 번호에 해당하는 댓글 전체 삭제 -->
+   <delete id="deleteAllComment" parameterType="int">
+      <![CDATA[
+         delete from board_comment
+         where comment_board_num = #{num}
+      ]]>
+   </delete>
+   
+   <!-- 댓글 삭제 -->
+      <delete id="deleteComment" parameterType="int">
+      <![CDATA[
+         delete from board_comment
+         where comment_num = #{comment_num}
+      ]]>
+   </delete>
+   
+   <!-- 댓글 수 감소 -->
+   <update id="minusCommentNum" >
+      <![CDATA[
+         update board
+         set commentcount=commentcount-1 
+         where num = #{comment_board_num}
+      ]]>
+   </update>
+</mapper>

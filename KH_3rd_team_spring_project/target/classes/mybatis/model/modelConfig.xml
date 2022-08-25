@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" /> <!-- null이 들어갈 수 있는 행의 타입변경과 값을 null값으로 대입합니다 -->
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.myspring.kh.user.vo.UserVO" 				  alias="userVO" />
+ 		<typeAlias type="com.myspring.kh.board.vo.BoardVO" 				  alias="boardVO" />
+		<typeAlias type="com.myspring.kh.board.vo.BoardCommentVO" 		  alias="boardCommentVO" />
+		<typeAlias type="com.myspring.kh.cart.vo.CartVO" 				  alias="cartVO" />
+		<typeAlias type="com.myspring.kh.product.vo.ProductVO" 			  alias="productVO" />
+		<typeAlias type="com.myspring.kh.shipping.vo.ShippingVO" 		  alias="shippingVO" />
+	</typeAliases>
+</configuration>
+<!-- user.xml에서 resultMap의 type으로 사용 됨 -->

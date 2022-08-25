@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.product"> <!-- type은 modelConfig.xml에서 설정-->
+	<resultMap id="productResult" type="productVO">
+		<result property="productId" column="productId" />
+        <result property="pname" column="pname" />
+        <result property="unitPrice" column="unitPrice" />
+        <result property="description" column="description" />
+        <result property="manufacturer" column="manufacturer" />
+        <result property="category" column="category" />
+        <result property="unitsInStock" column="unitsInStock" />
+        <result property="condition" column="condition" />
+        <result property="filename" column="filename" />
+	</resultMap> 
+
+
+    <!-- null값이 들어갈 수 있는 행은 value값 뒤에 , jdbcType=VARCHAR를 붙이거나 mybatis-config.xml파일에서 전역 설정을 해주면 됩니다 -->
+    <!-- 모든 상품을 불러옵니다 -->
+  	<select id="selectAllProduct"  resultType="ProductVO">
+		<![CDATA[
+		 SELECT * FROM PRODUCTS
+		]]>   
+	</select>
+	
+	<!-- 해당 상품의 상세정보를 불러옵니다 -->
+	<select id="selectDetailProduct" parameterType="String" resultType="ProductVO">
+		<![CDATA[
+		 SELECT * FROM PRODUCTS WHERE productId = #{productId}
+		]]>   
+	</select>
+	
+	<!-- 상품 추가 -->
+	<insert id="insertProduct"  parameterType="ProductVO">
+		<![CDATA[
+			INSERT into products(productId,pname,unitprice,description,manufacturer,category,unitsinstock,condition,filename)
+			VALUES(#{productId}, #{pname}, #{unitPrice}, #{description},#{manufacturer}, #{category}, #{unitsInStock}, #{condition}, #{filename})
+		]]>
+	</insert>
+	
+	<!-- 상품의 재고수를 업데이트합니다 -->
+	<update id="updateUnitsInStock" parameterType="ProductVO">
+		<![CDATA[
+		 update products
+	     set unitsInStock=#{unitsInStock}
+	     where productId=#{productId}
+		]]>   
+	</update>
+
+   </mapper>

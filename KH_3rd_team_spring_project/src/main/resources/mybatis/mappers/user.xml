@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.user"><!-- type은 modelConfig.xml에서 설정-->
+	<resultMap id="memResult" type="userVO">
+		<result property="id" column="id" />
+        <result property="pass" column="pass" />
+        <result property="name" column="name" />
+        <result property="email" column="email" />
+        <result property="phonenum" column="phonenum" />
+        <result property="admin" column="amdin" />
+        <result property="nickname" column="nickname" />
+        <result property="address" column="address" />
+        <result property="zipcode" column="zipcode" />
+	</resultMap> 
+
+    <!-- null값이 들어갈 수 있는 행은 value값 뒤에 , jdbcType=VARCHAR를 붙이거나 mybatis-config.xml파일에서 전역 설정을 해주면 됩니다 -->
+    <!-- 회원가입 -->
+  <insert id="insertUser"  parameterType="userVO">
+		<![CDATA[
+		 insert into users (id, pass, name, nickname, zipcode, address, email, phonenum, admin )
+		 values(#{id}, #{pass}, #{name}, #{nickname}, #{zipcode}, #{address}, #{email}, #{phonenum}, 0)
+		]]>      
+	</insert>
+	
+   <!-- 회원정보수정 -->
+   <update id="updateUser"  parameterType="userVO">
+     <![CDATA[
+	     update users
+	     set pass=#{pass}, name=#{name}, nickname=#{nickname}, zipcode=#{zipcode}, address=#{address}, email=#{email}, phonenum=#{phonenum}
+	     where
+	     id=#{id}
+      ]]>      
+   </update> 
+  
+  <!-- 로그인 -->
+  <select id="loginById"  resultType="userVO"   parameterType="userVO" >
+	<![CDATA[
+		select * from users	
+		where id=#{id} and pass=#{pass}		
+	]]>
+  </select>
+  
+  <!-- 아이디 중복체크 -->
+  <select id="checkId"  resultType="String"   parameterType="userVO" >
+	<![CDATA[
+		SELECT COUNT(*)
+		FROM users
+		where id=#{id}	
+	]]>
+  </select>
+  
+  <!-- 닉네임 중복체크 -->
+  <select id="checkNickname" resultType="String"   parameterType="userVO" >
+	<![CDATA[
+		SELECT COUNT(*)
+		FROM users
+		where nickname=#{nickname}	
+	]]>
+  </select>
+</mapper>

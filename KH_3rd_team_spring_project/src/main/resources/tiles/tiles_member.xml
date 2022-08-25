@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+   <definition name="baseLayout"  template="/WEB-INF/views/common/layout.jsp">
+      <put-attribute name="title" value="" />
+      <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+      <put-attribute name="body" value="" />
+      <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+   </definition>
+
+   <definition name="main" extends="baseLayout">
+      <put-attribute name="title" value="메인페이지" />
+      <put-attribute name="body" value="/WEB-INF/views/main.jsp" />
+   </definition>
+   
+   <definition name="chat" extends="baseLayout">
+      <put-attribute name="title" value="유저채팅창" />
+      <put-attribute name="body" value="/WEB-INF/views/common/chatting.jsp" />
+   </definition>
+   
+   <definition name="admin" extends="baseLayout">
+      <put-attribute name="title" value="운영자채팅창" />
+      <put-attribute name="body" value="/WEB-INF/views/common/admin.jsp" />
+   </definition>
+    
+   <definition name="/user/loginForm" extends="baseLayout">
+      <put-attribute name="title" value="로그인창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/loginForm.jsp" />
+   </definition>
+      
+
+   <definition name="/user/signupForm" extends="baseLayout">
+      <put-attribute name="title" value="회원등록창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/signupForm.jsp" />
+   </definition>
+   
+   <definition name="/user/signupCompleteForm" extends="baseLayout">
+      <put-attribute name="title" value="등록축하창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/signupCompleteForm.jsp" />
+   </definition>
+   
+   <definition name="/user/userEditForm" extends="baseLayout">
+      <put-attribute name="title" value="회원수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/userEditForm.jsp" />
+   </definition>
+   
+   <definition name="/user/editCompleteForm" extends="baseLayout">
+      <put-attribute name="title" value="수정완료창" />
+      <put-attribute name="body" value="/WEB-INF/views/user/editCompleteForm.jsp" />
+   </definition>
+
+<!-- /view/product -->
+   <definition name="/product/allProduct" extends="baseLayout">
+      <put-attribute name="title" value="상품 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/product/allProduct.jsp" />
+   </definition>
+   
+   <definition name="/product/productDetails" extends="baseLayout">
+      <put-attribute name="title" value="상품 상세확인창" />
+      <put-attribute name="body" value="/WEB-INF/views/product/productDetails.jsp" />
+   </definition>
+   
+   <definition name="/product/addProductForm" extends="baseLayout">
+      <put-attribute name="title" value="상품 등록창" />
+      <put-attribute name="body" value="/WEB-INF/views/product/addProductForm.jsp" />
+   </definition>   
+   
+   
+   
+   
+   <!-- /view/cart -->
+   <definition name="/cart/cartPage" extends="baseLayout">
+      <put-attribute name="title" value="카트 목록" />
+      <put-attribute name="body" value="/WEB-INF/views/cart/cartPage.jsp" />
+   </definition>
+   
+   
+   
+
+   
+	<!-- /view/shipping -->
+   <definition name="/shipping/shippingForm" extends="baseLayout">
+      <put-attribute name="title" value="배송 정보 입력창" />
+      <put-attribute name="body" value="/WEB-INF/views/shipping/shippingForm.jsp" />
+   </definition>
+   
+   <definition name="/shipping/orderConfirmation" extends="baseLayout">
+      <put-attribute name="title" value="배송 정보확인창" />
+      <put-attribute name="body" value="/WEB-INF/views/shipping/orderConfirmation.jsp" />
+   </definition>
+   
+   <definition name="/shipping/checkOutCancelled" extends="baseLayout">
+      <put-attribute name="title" value="배송 취소창" />
+      <put-attribute name="body" value="/WEB-INF/views/shipping/checkOutCancelled.jsp" />
+   </definition>
+   
+   <definition name="/shipping/thankCustomer" extends="baseLayout">
+      <put-attribute name="title" value="배송 완료창" />
+      <put-attribute name="body" value="/WEB-INF/views/shipping/thankCustomer.jsp" />
+   </definition>   
+   
+   <definition name="/shipping/shippingList" extends="baseLayout">
+      <put-attribute name="title" value="배송 내역 목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/shipping/shippingList.jsp" />
+   </definition>
+   
+   <definition name="/shipping/shippingView" extends="baseLayout">
+      <put-attribute name="title" value="배송 내역 상세창" />
+      <put-attribute name="body" value="/WEB-INF/views/shipping/shippingView.jsp" />
+   </definition>
+   
+   <definition name="/board/listBoard" extends="baseLayout">
+		<put-attribute name="title" value="글목록창" />
+		<put-attribute name="body" value="/WEB-INF/views/board/listBoard.jsp" />
+	</definition>
+	
+	<definition name="/board/writePost" extends="baseLayout">
+		<put-attribute name="title" value="글상세창" />
+		<put-attribute name="body" value="/WEB-INF/views/board/writePost.jsp" />
+	</definition>	
+	
+	<definition name="/board/viewPost" extends="baseLayout">
+		<put-attribute name="title" value="글상세창" />
+		<put-attribute name="body" value="/WEB-INF/views/board/viewPost.jsp" />
+	</definition>
+
+	<definition name="/board/modPostForm" extends="baseLayout">
+		<put-attribute name="title" value="글수정창" />
+		<put-attribute name="body" value="/WEB-INF/views/board/modPostForm.jsp" />
+	</definition>
+   
+</tiles-definitions>
