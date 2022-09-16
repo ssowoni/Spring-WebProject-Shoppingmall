@@ -1,4 +1,4 @@
-웹 쇼핑몰 JSP 프로젝트
+웹 쇼핑몰 Spring 프로젝트
 
 환경
 언어 : Java(Tm) SE Development Kit 11.0.13 
